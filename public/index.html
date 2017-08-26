@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Hello, WebVR!</title>
+    <meta name="description" content="Hello, WebVR! - A-Frame">
+    <script src="https://aframe.io/releases/0.6.0/aframe.min.js"></script>
+    <!-- <script src="https://cdn.rawgit.com/donmccurdy/aframe-gamepad-controls/v0.5.0/dist/aframe-gamepad-controls.js"></script>  -->
+    <script src="scripts/socket.io.slim.js"></script>
+    <script src="scripts/jquery.js"></script>
+  </head>
+  <body>
+  
+  <!-- <button id="ledOn">Turn Me On!</button>
+  <button id="ledOff">Turn Me Off!</button> -->
+  <script>
+      var socket = io.connect('/');
+
+       socket.on('connect', function(data) {
+        socket.emit('join');
+       });
+      
+      AFRAME.registerComponent('change-color-on-hover', {
+        schema: {
+          color: {default: 'blue'}
+        },
+        
+        init: function () {
+          
+          var data = this.data;
+          var el = this.el;  // <a-box>
+         
+          var defaultColor = el.getAttribute('material').color;
+          el.addEventListener('mouseenter', function () {
+            el.setAttribute('color', data.color);
+            socket.emit('led:on');
+          });
+          el.addEventListener('mouseleave', function () {
+            el.setAttribute('color', defaultColor);
+            socket.emit('led:off');
+          });
+        }
+      });
+    </script>
+
+<a-scene>
+      
+      <a-box color="black" position="0 1 -4" change-color-on-hover="color: red"></a-box>
+      <a-sky color="white"></a-sky>
+      <a-camera><a-cursor></a-cursor></a-camera>
+      
+    </a-scene>
+  <!-- <a-assets>
+    <video id="brandon" autoplay loop="false" src="image_uploaded_from_ios.mp4"></video>
+  </a-assets>
+  
+  <a-scene>
+    <a-video src="#brandon" width="16" height="9" position="0 0 -20" rotation="-180"></a-video>
+
+    <a-box id="redBox" class="clickable" color="red" position="-1 0.5 -3"></a-box>
+    <a-sphere class="clickable" color="blue" position="1 .75 -2" scale="1" radius=".5"></a-sphere>
+    <a-box color="green"></a-box>
+    <a-plane position="0 0 -4" rotation="-90 0 0" width="4" height="4" color="#7BC8A4"></a-plane>
+    <a-sky color="#000000"></a-sky>
+    <a-entity camera="" position="0 1 0" look-controls="" gamepad-controls="" sound="" rotation="" scale="" visible="">
+      </a-entity>
+  </a-scene> -->
+
+  
+    
+
+  
+
+  
+  
+  </body>
+</html>
+
+
